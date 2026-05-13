@@ -124,6 +124,7 @@ function IncidentList() {
                   <th style={thStyle}>Pozuntu tipi</th>
                   <th style={thStyle}>Cəza növü</th>
                   <th style={thStyle}>Status</th>
+                  <th style={thStyle}>Əlavə edən</th>
                   <th style={thStyle}>Tarix</th>
                   <th style={thStyle}>Əməliyyat</th>
                 </tr>
@@ -158,6 +159,8 @@ function IncidentList() {
                         {incident.status}
                       </span>
                     </td>
+
+                    <td style={tdStyle}>{incident.createdBy}</td>
 
                     <td style={tdStyle}>{incident.incidentDate}</td>
 
