@@ -7,8 +7,8 @@ function Dashboard() {
     total: 0,
     active: 0,
     resolved: 0,
-    recentIncidents: [],
   });
+
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -18,9 +18,11 @@ function Dashboard() {
   const fetchIncidents = async () => {
     try {
       const data = (await incident.getAll()) || [];
+
       const activeCount = data.filter(
         (inc) => inc.status === "ARAŞDIRILIR",
       ).length;
+
       const resolvedCount = data.filter(
         (inc) => inc.status === "BAĞLANIB",
       ).length;
@@ -29,7 +31,6 @@ function Dashboard() {
         total: data.length,
         active: activeCount,
         resolved: resolvedCount,
-        recentIncidents: data.slice(0, 5),
       });
     } catch (error) {
       toast.error("Failed to fetch incidents");
@@ -65,48 +66,6 @@ function Dashboard() {
           <div className="stat-number">{stats.resolved}</div>
           <div className="stat-label">Bağlanmış pozuntular</div>
         </div>
-      </div>
-
-      <div className="card">
-        <div className="card-header"></div>
-        {stats.recentIncidents.length === 0 ? (
-          <p>No incidents found</p>
-        ) : (
-          <div className="incident-table">
-            <table>
-              <thead>
-                <tr>
-                  <th>Ad soyad</th>
-                  <th>İdarə</th>
-                  <th>Pozuntu tipi</th>
-                  <th>Status</th>
-                  <th>Tarix</th>
-                </tr>
-              </thead>
-              <tbody>
-                {stats.recentIncidents.map((incident) => (
-                  <tr key={incident.id}>
-                    <td>{incident.fullName}</td>
-                    <td>{incident.department}</td>
-                    <td>{incident.incidentType}</td>
-                    <td>
-                      <span
-                        className={`status-badge ${
-                          incident.status === "ARAŞDIRILIR"
-                            ? "status-active"
-                            : "status-resolved"
-                        }`}
-                      >
-                        {incident.status}
-                      </span>
-                    </td>
-                    <td>{incident.incidentDate}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        )}
       </div>
     </div>
   );
