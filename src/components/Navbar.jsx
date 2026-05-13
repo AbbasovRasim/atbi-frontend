@@ -17,7 +17,7 @@ function Navbar() {
       <nav className="navbar">
         <div className="navbar-container">
           <Link to="/dashboard" className="navbar-brand">
-            İntizam pozuntuları
+            Daxili Araşdırmalar Xidməti
           </Link>
           <div className="navbar-links">
             <Link to="/dashboard" className="nav-link">

@@ -1,11 +1,11 @@
-const API_BASE_URL = "http://localhost:8080";
+const API_BASE_URL = "https://photo-dosage-dwelled.ngrok-free.dev";
 
 export const api = {
   async request(endpoint, options = {}) {
     const token = localStorage.getItem("token");
-
     const headers = {
       "Content-Type": "application/json",
+      "ngrok-skip-browser-warning": "true",
       ...options.headers,
     };
 
@@ -28,10 +28,16 @@ export const api = {
       return { success: true };
     }
 
-    const data = await response.json();
+    let data = null;
+
+    const text = await response.text();
+
+    if (text) {
+      data = JSON.parse(text);
+    }
 
     if (!response.ok) {
-      throw new Error(data.message || "Something went wrong");
+      throw new Error(data?.message || "Something went wrong");
     }
 
     return data;
@@ -112,7 +118,7 @@ export const auth = {
   },
 };
 
-// ✅ BURASI ƏN VACİB HİSSƏDİR!
+// ✅ INCIDENT API
 export const incident = {
   async getAll() {
     return api.get("/incidents");

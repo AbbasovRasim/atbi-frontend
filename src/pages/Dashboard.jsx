@@ -17,7 +17,7 @@ function Dashboard() {
 
   const fetchIncidents = async () => {
     try {
-      const data = await incident.getAll();
+      const data = (await incident.getAll()) || [];
       const activeCount = data.filter(
         (inc) => inc.status === "ARAŞDIRILIR",
       ).length;

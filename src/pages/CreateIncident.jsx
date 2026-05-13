@@ -88,11 +88,17 @@ function CreateIncident() {
               required
             >
               <option value="">Pozuntunun növü</option>
-              <option value="Safety">Postda Telefon istifadə etmək</option>
-              <option value="Security">Baxışsız şəxs keçməsi</option>
-              <option value="Harassment">Postu öz başına tərk etmə</option>
-              <option value="Policy Violation">Postda yatmaq</option>
-              <option value="Other">Other</option>
+              <option value="Postda Telefon istifadə etmək">
+                Postda Telefon istifadə etmək
+              </option>
+              <option value="Baxışsız şəxs keçməsi">
+                Baxışsız şəxs keçməsi
+              </option>
+              <option value="Postu öz başına tərk etmə">
+                Postu öz başına tərk etmə
+              </option>
+              <option value="Postda yatmaq">Postda yatmaq</option>
+              <option value="Digər">Digər</option>
             </select>
           </div>
 
@@ -105,11 +111,11 @@ function CreateIncident() {
               required
             >
               <option value="">Cəza növü</option>
-              <option value="Warning">Yazılı xəbərdarlıq</option>
-              <option value="Suspension">Şifahi xəbərdarlıq</option>
-              <option value="Termination">Töhmət</option>
-              <option value="Fine">Şiddətli töhmət</option>
-              <option value="Training">
+              <option value="Yazılı xəbərdarlıq">Yazılı xəbərdarlıq</option>
+              <option value="SŞifahi xəbərdarlıq">Şifahi xəbərdarlıq</option>
+              <option value="Töhmət">Töhmət</option>
+              <option value="Şiddətli töhmət">Şiddətli töhmət</option>
+              <option value=" Sonuncu xəbərdarlıqla şiddətli töhmət">
                 Sonuncu xəbərdarlıqla şiddətli töhmət
               </option>
             </select>

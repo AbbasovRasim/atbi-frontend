@@ -5,7 +5,7 @@ import { incident } from "../services/api";
 function IncidentList() {
   const [incidents, setIncidents] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [filter, setFilter] = useState("all");
+  const [search, setSearch] = useState("");
 
   useEffect(() => {
     fetchIncidents();
@@ -13,10 +13,10 @@ function IncidentList() {
 
   const fetchIncidents = async () => {
     try {
-      const data = await incident.getAll();
+      const data = (await incident.getAll()) || [];
       setIncidents(data);
     } catch (error) {
-      toast.error("Failed to fetch incidents");
+      toast.error("Pozuntular yüklənmədi");
     } finally {
       setLoading(false);
     }
@@ -25,30 +25,29 @@ function IncidentList() {
   const handleUpdateStatus = async (id, currentStatus) => {
     const newStatus =
       currentStatus === "ARAŞDIRILIR" ? "BAĞLANIB" : "ARAŞDIRILIR";
+
     try {
       await incident.updateStatus(id, newStatus);
-      toast.success("Status updated successfully");
-      fetchIncidents();
-    } catch (error) {
-      toast.error("Failed to update status");
-    }
-  };
 
-  const handleDelete = async (id) => {
-    if (window.confirm("Are you sure you want to delete this incident?")) {
-      try {
-        await incident.softDelete(id);
-        toast.success("Incident deleted successfully");
-        fetchIncidents();
-      } catch (error) {
-        toast.error("Failed to delete incident");
-      }
+      setIncidents((prevIncidents) =>
+        prevIncidents.map((item) =>
+          item.id === id
+            ? {
+                ...item,
+                status: newStatus,
+              }
+            : item,
+        ),
+      );
+
+      toast.success("Status dəyişdirildi");
+    } catch (error) {
+      toast.error("Status dəyişdirilə bilmədi");
     }
   };
 
   const filteredIncidents = incidents.filter((incident) => {
-    if (filter === "all") return true;
-    return incident.status === filter;
+    return incident.fullName.toLowerCase().includes(search.toLowerCase());
   });
 
   if (loading) {
@@ -67,55 +66,88 @@ function IncidentList() {
           justifyContent: "space-between",
           alignItems: "center",
           marginBottom: "2rem",
+          flexWrap: "wrap",
+          gap: "1rem",
         }}
       >
-        <h1 style={{ color: "white" }}>Incidents</h1>
-        <div>
-          <select
-            value={filter}
-            onChange={(e) => setFilter(e.target.value)}
-            style={{
-              padding: "0.5rem",
-              borderRadius: "8px",
-              border: "1px solid #ddd",
-            }}
-          >
-            <option value="all">All</option>
-            <option value="ARAŞDIRILIR">Active</option>
-            <option value="BAĞLANIB">Resolved</option>
-          </select>
-        </div>
+        <h1
+          style={{
+            color: "white",
+            fontSize: "3rem",
+            fontWeight: "700",
+          }}
+        >
+          Xidməti pozuntular
+        </h1>
+
+        <input
+          type="text"
+          placeholder="Əməkdaş axtar..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          style={{
+            padding: "0.9rem 1.2rem",
+            borderRadius: "14px",
+            border: "1px solid rgba(255,255,255,0.2)",
+            background: "white",
+            color: "#222",
+            outline: "none",
+            width: "260px",
+            fontSize: "1rem",
+            backdropFilter: "blur(8px)",
+          }}
+        />
       </div>
 
-      <div className="card">
+      <div
+        className="card"
+        style={{
+          borderRadius: "24px",
+          padding: "2rem",
+        }}
+      >
         {filteredIncidents.length === 0 ? (
-          <p>No incidents found</p>
+          <p>Pozuntu tapılmadı</p>
         ) : (
           <div className="incident-table">
-            <table>
+            <table
+              style={{
+                width: "100%",
+                borderCollapse: "collapse",
+              }}
+            >
               <thead>
                 <tr>
-                  <th>ID</th>
-                  <th>Ad soyad</th>
-                  <th>Vəzifə</th>
-                  <th>idarə</th>
-                  <th>Pozuntu tipi</th>
-                  <th>Cəza növü</th>
-                  <th>Status</th>
-                  <th>Tarix</th>
-                  <th>Actions</th>
+                  <th style={thStyle}>Ad soyad</th>
+                  <th style={thStyle}>Vəzifə</th>
+                  <th style={thStyle}>İdarə</th>
+                  <th style={thStyle}>Pozuntu tipi</th>
+                  <th style={thStyle}>Cəza növü</th>
+                  <th style={thStyle}>Status</th>
+                  <th style={thStyle}>Tarix</th>
+                  <th style={thStyle}>Əməliyyat</th>
                 </tr>
               </thead>
+
               <tbody>
                 {filteredIncidents.map((incident) => (
-                  <tr key={incident.id}>
-                    <td>{incident.id}</td>
-                    <td>{incident.fullName}</td>
-                    <td>{incident.position}</td>
-                    <td>{incident.department}</td>
-                    <td>{incident.incidentType}</td>
-                    <td>{incident.punishment}</td>
-                    <td>
+                  <tr
+                    key={incident.id}
+                    style={{
+                      borderBottom: "1px solid rgba(0,0,0,0.08)",
+                    }}
+                  >
+                    <td style={tdStyle}>{incident.fullName}</td>
+
+                    <td style={tdStyle}>{incident.position}</td>
+
+                    <td style={tdStyle}>{incident.department}</td>
+
+                    <td style={tdStyle}>{incident.incidentType}</td>
+
+                    <td style={tdStyle}>{incident.punishment}</td>
+
+                    <td style={tdStyle}>
                       <span
                         className={`status-badge ${
                           incident.status === "ARAŞDIRILIR"
@@ -126,18 +158,20 @@ function IncidentList() {
                         {incident.status}
                       </span>
                     </td>
-                    <td>{incident.incidentDate}</td>
-                    <td>
-                      {/* Status buttonu - HƏR KƏS GÖRÜR */}
+
+                    <td style={tdStyle}>{incident.incidentDate}</td>
+
+                    <td style={tdStyle}>
                       <button
                         onClick={() =>
                           handleUpdateStatus(incident.id, incident.status)
                         }
                         className="btn btn-secondary"
                         style={{
-                          marginRight: "0.5rem",
-                          padding: "0.25rem 0.5rem",
-                          fontSize: "0.875rem",
+                          borderRadius: "10px",
+                          padding: "0.45rem 0.9rem",
+                          fontSize: "0.85rem",
+                          fontWeight: "600",
                         }}
                       >
                         Status
@@ -153,5 +187,20 @@ function IncidentList() {
     </div>
   );
 }
+
+const thStyle = {
+  textAlign: "left",
+  padding: "1rem",
+  color: "#2b2b2b",
+  fontSize: "1rem",
+  fontWeight: "700",
+};
+
+const tdStyle = {
+  padding: "1rem",
+  fontSize: "1rem",
+  color: "#222",
+  verticalAlign: "middle",
+};
 
 export default IncidentList;
