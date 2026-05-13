@@ -5,14 +5,18 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
+
 import { Toaster } from "react-hot-toast";
+
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import IncidentList from "./pages/IncidentList";
 import CreateIncident from "./pages/CreateIncident";
+
 import PrivateRoute from "./components/PrivateRoute";
 import Navbar from "./components/Navbar";
+
 import "./App.css";
 
 function App() {
@@ -53,13 +57,15 @@ function App() {
 
         <Routes>
           <Route path="/login" element={<Login />} />
+
           <Route
             path="/register"
             element={
+              localStorage.getItem("token") &&
               localStorage.getItem("role") === "ADMIN" ? (
                 <Register />
               ) : (
-                <Navigate to="/dashboard" />
+                <Navigate to="/login" />
               )
             }
           />
@@ -67,7 +73,9 @@ function App() {
           <Route element={<PrivateRoute />}>
             <Route element={<Navbar />}>
               <Route path="/dashboard" element={<Dashboard />} />
+
               <Route path="/incidents" element={<IncidentList />} />
+
               <Route path="/create-incident" element={<CreateIncident />} />
             </Route>
           </Route>
