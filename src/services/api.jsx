@@ -101,6 +101,11 @@ export const auth = {
     }
 
     localStorage.setItem("token", token);
+
+    const payload = JSON.parse(atob(token.split(".")[1]));
+
+    localStorage.setItem("role", payload.role);
+
     return token;
   },
 

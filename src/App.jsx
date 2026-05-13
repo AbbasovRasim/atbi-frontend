@@ -53,7 +53,16 @@ function App() {
 
         <Routes>
           <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
+          <Route
+            path="/register"
+            element={
+              localStorage.getItem("role") === "ADMIN" ? (
+                <Register />
+              ) : (
+                <Navigate to="/dashboard" />
+              )
+            }
+          />
 
           <Route element={<PrivateRoute />}>
             <Route element={<Navbar />}>
