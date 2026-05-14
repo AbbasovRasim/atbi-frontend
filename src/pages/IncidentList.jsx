@@ -34,7 +34,7 @@ const StatusBadge = ({ status }) => {
     <span
       style={{
         display: "inline-block",
-        padding: "0.5rem 1.3rem", // daha böyük
+        padding: "0.7rem 1rem", // daha böyük
         fontSize: "0.5rem", // daha böyük
         borderRadius: "40px", // daha yumrus
         fontWeight: "600",
