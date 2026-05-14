@@ -22,7 +22,7 @@ function Navbar() {
       <nav className="navbar">
         <div className="navbar-container">
           <Link to="/dashboard" className="navbar-brand">
-            Daxili Araşdırmalar Xidməti
+            Daxili Araşdırmalar və Kadr Təhlükəsizliyi şöbəsi
           </Link>
 
           <div className="navbar-links">
