@@ -48,20 +48,22 @@ const StatusBadge = ({ status }) => {
 };
 
 // Action button componenti
+// Action button componenti - BÖYÜDÜLMÜŞ VERSİYA
 const ActionButton = ({ onClick, disabled }) => (
   <button
     onClick={onClick}
     disabled={disabled}
     style={{
       borderRadius: "8px",
-      padding: "0.4rem 0.9rem",
-      fontSize: "0.8rem",
+      padding: "0.6rem 1.2rem", // padding artırıldı (əvvəl 0.4rem 0.9rem)
+      fontSize: "0.9rem", // font ölçüsü artırıldı (əvvəl 0.8rem)
       fontWeight: "500",
       border: "1px solid #dee2e6",
       backgroundColor: "white",
       cursor: disabled ? "not-allowed" : "pointer",
       opacity: disabled ? 0.6 : 1,
       transition: "all 0.2s ease",
+      minWidth: "110px", // minimum en əlavə edildi
     }}
     onMouseEnter={(e) => {
       if (!disabled) e.currentTarget.style.backgroundColor = "#f8f9fa";
