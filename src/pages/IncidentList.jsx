@@ -47,38 +47,27 @@ const StatusBadge = ({ status }) => {
   );
 };
 
-// SUPER BÖYÜK VERSİYA
+// Action button componenti
 const ActionButton = ({ onClick, disabled }) => (
   <button
     onClick={onClick}
     disabled={disabled}
     style={{
-      borderRadius: "12px",
-      padding: "0.85rem 1.8rem",
-      fontSize: "1rem",
-      fontWeight: "600",
-      border: "none",
-      backgroundColor: "#4361ee",
-      color: "white",
+      borderRadius: "8px",
+      padding: "0.4rem 0.9rem",
+      fontSize: "0.8rem",
+      fontWeight: "500",
+      border: "1px solid #dee2e6",
+      backgroundColor: "white",
       cursor: disabled ? "not-allowed" : "pointer",
       opacity: disabled ? 0.6 : 1,
       transition: "all 0.2s ease",
-      width: "145px",
-      boxShadow: "0 2px 6px rgba(0,0,0,0.15)",
     }}
     onMouseEnter={(e) => {
-      if (!disabled) {
-        e.currentTarget.style.backgroundColor = "#3a56d4";
-        e.currentTarget.style.transform = "translateY(-2px)";
-        e.currentTarget.style.boxShadow = "0 4px 12px rgba(67,97,238,0.3)";
-      }
+      if (!disabled) e.currentTarget.style.backgroundColor = "#f8f9fa";
     }}
     onMouseLeave={(e) => {
-      if (!disabled) {
-        e.currentTarget.style.backgroundColor = "#4361ee";
-        e.currentTarget.style.transform = "translateY(0)";
-        e.currentTarget.style.boxShadow = "0 2px 6px rgba(0,0,0,0.15)";
-      }
+      if (!disabled) e.currentTarget.style.backgroundColor = "white";
     }}
   >
     Status dəyiş
