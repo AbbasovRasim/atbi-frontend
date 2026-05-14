@@ -3,6 +3,7 @@ const API_BASE_URL = "https://photo-dosage-dwelled.ngrok-free.dev";
 export const api = {
   async request(endpoint, options = {}) {
     const token = localStorage.getItem("token");
+
     const headers = {
       "Content-Type": "application/json",
       "ngrok-skip-browser-warning": "true",
@@ -20,7 +21,11 @@ export const api = {
 
     if (response.status === 401) {
       localStorage.removeItem("token");
+      localStorage.removeItem("role");
+      localStorage.removeItem("username");
+
       window.location.href = "/login";
+
       throw new Error("Unauthorized");
     }
 
@@ -44,7 +49,9 @@ export const api = {
   },
 
   get(endpoint) {
-    return this.request(endpoint, { method: "GET" });
+    return this.request(endpoint, {
+      method: "GET",
+    });
   },
 
   post(endpoint, body) {
@@ -62,7 +69,9 @@ export const api = {
   },
 
   delete(endpoint) {
-    return this.request(endpoint, { method: "DELETE" });
+    return this.request(endpoint, {
+      method: "DELETE",
+    });
   },
 };
 
@@ -70,9 +79,11 @@ export const auth = {
   async register(userData) {
     const response = await fetch(`${API_BASE_URL}/auth/register`, {
       method: "POST",
+
       headers: {
         "Content-Type": "application/json",
       },
+
       body: JSON.stringify(userData),
     });
 
@@ -88,9 +99,11 @@ export const auth = {
   async login(credentials) {
     const response = await fetch(`${API_BASE_URL}/auth/login`, {
       method: "POST",
+
       headers: {
         "Content-Type": "application/json",
       },
+
       body: JSON.stringify(credentials),
     });
 
@@ -106,11 +119,16 @@ export const auth = {
 
     localStorage.setItem("role", payload.role);
 
+    localStorage.setItem("username", payload.sub);
+
     return token;
   },
 
   logout() {
     localStorage.removeItem("token");
+    localStorage.removeItem("role");
+    localStorage.removeItem("username");
+
     window.location.href = "/login";
   },
 
@@ -123,7 +141,7 @@ export const auth = {
   },
 };
 
-// ✅ INCIDENT API
+// INCIDENT API
 export const incident = {
   async getAll() {
     return api.get("/incidents");
