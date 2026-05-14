@@ -1,4 +1,4 @@
-const API_BASE_URL = "https://photo-dosage-dwelled.ngrok-free.dev";
+const API_BASE_URL = "https://atbi-backend.onrender.com";
 
 export const api = {
   async request(endpoint, options = {}) {
