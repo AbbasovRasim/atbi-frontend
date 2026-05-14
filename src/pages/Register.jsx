@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import toast from "react-hot-toast";
 import { auth } from "../services/api";
@@ -11,31 +11,16 @@ function Register() {
     email: "",
     department: "",
   });
-
   const [loading, setLoading] = useState(false);
-
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const role = localStorage.getItem("role");
-
-    if (role !== "ADMIN") {
-      toast.error("Qeydiyyat yalnız administrator tərəfindən mümkündür");
-
-      navigate("/login");
-    }
-  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     setLoading(true);
 
     try {
       await auth.register(userData);
-
       toast.success("Registration successful! Please login.");
-
       navigate("/login");
     } catch (error) {
       toast.error(error.message);
@@ -53,19 +38,11 @@ function Register() {
 
   return (
     <div className="container">
-      <div
-        className="card"
-        style={{
-          maxWidth: "500px",
-          margin: "50px auto",
-        }}
-      >
+      <div className="card" style={{ maxWidth: "500px", margin: "50px auto" }}>
         <div className="card-header">Register</div>
-
         <form onSubmit={handleSubmit}>
           <div className="form-group">
             <label>Username *</label>
-
             <input
               type="text"
               name="username"
@@ -78,7 +55,6 @@ function Register() {
 
           <div className="form-group">
             <label>Password *</label>
-
             <input
               type="password"
               name="password"
@@ -91,7 +67,6 @@ function Register() {
 
           <div className="form-group">
             <label>Full Name</label>
-
             <input
               type="text"
               name="fullname"
@@ -103,7 +78,6 @@ function Register() {
 
           <div className="form-group">
             <label>Email</label>
-
             <input
               type="email"
               name="email"
@@ -115,7 +89,6 @@ function Register() {
 
           <div className="form-group">
             <label>Department</label>
-
             <input
               type="text"
               name="department"
@@ -135,12 +108,7 @@ function Register() {
           </button>
         </form>
 
-        <div
-          style={{
-            textAlign: "center",
-            marginTop: "1rem",
-          }}
-        >
+        <div style={{ textAlign: "center", marginTop: "1rem" }}>
           <Link to="/login" style={{ color: "#667eea" }}>
             Already have an account? Login
           </Link>
