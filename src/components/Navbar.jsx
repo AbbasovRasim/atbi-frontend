@@ -56,8 +56,8 @@ function Navbar() {
             bottom: "10px",
             left: "20px",
             color: "rgba(255,255,255,0.7)",
-            fontSize: "14px",
-            fontWeight: "500",
+            fontSize: "18px",
+            fontWeight: "700",
           }}
         >
           {username}
