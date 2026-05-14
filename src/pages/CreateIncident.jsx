@@ -128,8 +128,8 @@ function CreateIncident() {
               value={formData.status}
               onChange={handleChange}
             >
-              <option value="ARAŞDIRILIR">Araşdırılır</option>
-              <option value="BAĞLANIB">Araşdırma bitib</option>
+              <option value="Yekunlaşmamış">Yekunlaşmamış</option>
+              <option value="Yekunlaşmış">Yekunlaşmış</option>
             </select>
           </div>
 
