@@ -109,88 +109,81 @@ function IncidentList() {
         {filteredIncidents.length === 0 ? (
           <p>Pozuntu tapılmadı</p>
         ) : (
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
-              gap: "1.5rem",
-            }}
-          >
-            {filteredIncidents.map((incident) => (
-              <div
-                key={incident.id}
-                style={{
-                  background: "white",
-                  borderRadius: "24px",
-                  padding: "1.5rem",
-                  boxShadow: "0 10px 25px rgba(0,0,0,0.08)",
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: "0.8rem",
-                }}
-              >
-                <h2
-                  style={{
-                    fontSize: "1.4rem",
-                    fontWeight: "700",
-                    color: "#222",
-                  }}
-                >
-                  👤 {incident.fullName}
-                </h2>
+          <div className="incident-table">
+            <table
+              style={{
+                width: "100%",
+                borderCollapse: "collapse",
+              }}
+            >
+              <thead>
+                <tr>
+                  <th style={thStyle}>Ad soyad</th>
+                  <th style={thStyle}>Vəzifə</th>
+                  <th style={thStyle}>İdarə</th>
+                  <th style={thStyle}>Pozuntu tipi</th>
+                  <th style={thStyle}>Cəza növü</th>
+                  <th style={thStyle}>Status</th>
+                  <th style={thStyle}>Əlavə edən</th>
+                  <th style={thStyle}>Tarix</th>
+                  <th style={thStyle}>Əməliyyat</th>
+                </tr>
+              </thead>
 
-                <div style={{ color: "#444", fontSize: "1rem" }}>
-                  💼 {incident.position}
-                </div>
-
-                <div style={{ color: "#444", fontSize: "1rem" }}>
-                  🏢 {incident.department}
-                </div>
-
-                <div style={{ color: "#444", fontSize: "1rem" }}>
-                  ⚠️ {incident.incidentType}
-                </div>
-
-                <div style={{ color: "#444", fontSize: "1rem" }}>
-                  🔨 {incident.punishment}
-                </div>
-
-                <div>
-                  <span
-                    className={`status-badge ${
-                      incident.status === "Yekunlaşmamış"
-                        ? "status-active"
-                        : "status-resolved"
-                    }`}
+              <tbody>
+                {filteredIncidents.map((incident) => (
+                  <tr
+                    key={incident.id}
+                    style={{
+                      borderBottom: "1px solid rgba(0,0,0,0.08)",
+                    }}
                   >
-                    {incident.status}
-                  </span>
-                </div>
+                    <td style={tdStyle}>{incident.fullName}</td>
 
-                <div style={{ color: "#666", fontSize: "0.95rem" }}>
-                  📅 {incident.incidentDate}
-                </div>
+                    <td style={tdStyle}>{incident.position}</td>
 
-                <div style={{ color: "#666", fontSize: "0.95rem" }}>
-                  👨‍💻 {incident.createdBy}
-                </div>
+                    <td style={tdStyle}>{incident.department}</td>
 
-                <button
-                  onClick={() =>
-                    handleUpdateStatus(incident.id, incident.status)
-                  }
-                  className="btn btn-secondary"
-                  style={{
-                    marginTop: "1rem",
-                    borderRadius: "12px",
-                    padding: "0.8rem",
-                    fontWeight: "600",
-                  }}
-                >
-                  Status dəyiş
-                </button>
-              </div>
-            ))}
+                    <td style={tdStyle}>{incident.incidentType}</td>
+
+                    <td style={tdStyle}>{incident.punishment}</td>
+
+                    <td style={tdStyle}>
+                      <span
+                        className={`status-badge ${
+                          incident.status === "Yekunlaşmamış"
+                            ? "status-active"
+                            : "status-resolved"
+                        }`}
+                      >
+                        {incident.status}
+                      </span>
+                    </td>
+
+                    <td style={tdStyle}>{incident.createdBy}</td>
+
+                    <td style={tdStyle}>{incident.incidentDate}</td>
+
+                    <td style={tdStyle}>
+                      <button
+                        onClick={() =>
+                          handleUpdateStatus(incident.id, incident.status)
+                        }
+                        className="btn btn-secondary"
+                        style={{
+                          borderRadius: "10px",
+                          padding: "0.45rem 0.9rem",
+                          fontSize: "0.85rem",
+                          fontWeight: "600",
+                        }}
+                      >
+                        Status
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         )}
       </div>
