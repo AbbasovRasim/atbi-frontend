@@ -37,7 +37,7 @@ const StatusBadge = ({ status }) => {
         padding: "0.7rem 1.3rem", // daha böyük
         fontSize: "0.5rem", // daha böyük
         borderRadius: "40px", // daha yumrus
-        fontWeight: "500",
+        fontWeight: "600",
         backgroundColor: isPending ? "#fff3cd" : "#d1e7dd",
         color: isPending ? "#856404" : "#0f5132",
       }}
