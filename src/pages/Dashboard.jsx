@@ -59,12 +59,12 @@ function Dashboard() {
 
         <div className="stat-card">
           <div className="stat-number">{stats.active}</div>
-          <div className="stat-label">Aktiv pozuntular</div>
+          <div className="stat-label">Yekunlaşmamış pozuntular</div>
         </div>
 
         <div className="stat-card">
           <div className="stat-number">{stats.resolved}</div>
-          <div className="stat-label">Bağlanmış pozuntular</div>
+          <div className="stat-label">Yekunlaşmış pozuntular</div>
         </div>
       </div>
     </div>

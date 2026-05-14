@@ -24,7 +24,7 @@ function IncidentList() {
 
   const handleUpdateStatus = async (id, currentStatus) => {
     const newStatus =
-      currentStatus === "ARAŞDIRILIR" ? "BAĞLANIB" : "ARAŞDIRILIR";
+      currentStatus === "Yekunlaşmamış" ? "Yekunlaşmış" : "Yekunlaşmamış";
 
     try {
       await incident.updateStatus(id, newStatus);

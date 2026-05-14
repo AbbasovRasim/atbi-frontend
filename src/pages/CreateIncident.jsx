@@ -112,7 +112,7 @@ function CreateIncident() {
             >
               <option value="">Cəza növü</option>
               <option value="Yazılı xəbərdarlıq">Yazılı xəbərdarlıq</option>
-              <option value="SŞifahi xəbərdarlıq">Şifahi xəbərdarlıq</option>
+              <option value="Şifahi xəbərdarlıq">Şifahi xəbərdarlıq</option>
               <option value="Töhmət">Töhmət</option>
               <option value="Şiddətli töhmət">Şiddətli töhmət</option>
               <option value=" Sonuncu xəbərdarlıqla şiddətli töhmət">
