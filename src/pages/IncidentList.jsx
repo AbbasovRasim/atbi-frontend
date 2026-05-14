@@ -34,9 +34,9 @@ const StatusBadge = ({ status }) => {
     <span
       style={{
         display: "inline-block",
-        padding: "0.25rem 0.75rem",
-        borderRadius: "20px",
-        fontSize: "0.75rem",
+        padding: "0.7rem 1.3rem", // daha böyük
+        fontSize: "1rem", // daha böyük
+        borderRadius: "40px", // daha yumrus
         fontWeight: "600",
         backgroundColor: isPending ? "#fff3cd" : "#d1e7dd",
         color: isPending ? "#856404" : "#0f5132",
