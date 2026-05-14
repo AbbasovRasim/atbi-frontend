@@ -151,7 +151,7 @@ function IncidentList() {
                     <td style={tdStyle}>
                       <span
                         className={`status-badge ${
-                          incident.status === "ARAŞDIRILIR"
+                          incident.status === "Yekunlaşmamış"
                             ? "status-active"
                             : "status-resolved"
                         }`}

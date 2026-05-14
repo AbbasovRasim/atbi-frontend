@@ -41,7 +41,7 @@ function CreateIncident() {
   return (
     <div className="container">
       <div className="card" style={{ maxWidth: "800px", margin: "0 auto" }}>
-        <div className="card-header">Create New Incident</div>
+        <div className="card-header">Yeni pozuntu əlave et</div>
         <form onSubmit={handleSubmit}>
           <div className="form-group">
             <label>Ad soyad *</label>
@@ -134,7 +134,7 @@ function CreateIncident() {
           </div>
 
           <div className="form-group">
-            <label>Pozuntunun tarixi *</label>
+            <label>Tarix *</label>
             <input
               type="date"
               name="incidentDate"
@@ -152,14 +152,14 @@ function CreateIncident() {
               onClick={() => navigate("/incidents")}
               className="btn btn-secondary"
             >
-              Cancel
+              Ləğv et
             </button>
             <button
               type="submit"
               className="btn btn-primary"
               disabled={loading}
             >
-              {loading ? "Creating..." : "Create Incident"}
+              {loading ? "Creating..." : "Əlavə et"}
             </button>
           </div>
         </form>
