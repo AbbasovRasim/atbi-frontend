@@ -8,7 +8,7 @@ const STATUS_TYPES = {
   RESOLVED: "Yekunlaşmış",
 };
 
-// Sabit style obyektləri (komponentdən kənarda)
+// Style obyektləri
 const thStyle = {
   textAlign: "left",
   padding: "1rem",
@@ -34,9 +34,9 @@ const StatusBadge = ({ status }) => {
     <span
       style={{
         display: "inline-block",
-        padding: "0.7rem 1.3rem", // daha böyük
-        fontSize: "1rem", // daha böyük
-        borderRadius: "40px", // daha yumrus
+        padding: "0.5rem 1rem",
+        borderRadius: "30px",
+        fontSize: "0.9rem",
         fontWeight: "600",
         backgroundColor: isPending ? "#fff3cd" : "#d1e7dd",
         color: isPending ? "#856404" : "#0f5132",
@@ -48,29 +48,70 @@ const StatusBadge = ({ status }) => {
 };
 
 // Action button componenti
-const ActionButton = ({ onClick, disabled }) => (
+const ActionButton = ({ onClick, disabled, currentStatus }) => {
+  const isResolved = currentStatus === STATUS_TYPES.RESOLVED;
+  const buttonText = isResolved ? "Aç" : "Yekunlaşdır";
+
+  return (
+    <button
+      onClick={onClick}
+      disabled={disabled}
+      style={{
+        borderRadius: "10px",
+        padding: "0.7rem 1rem",
+        fontSize: "0.9rem",
+        fontWeight: "600",
+        border: "none",
+        backgroundColor: isResolved ? "#dc3545" : "#28a745",
+        color: "white",
+        cursor: disabled ? "not-allowed" : "pointer",
+        opacity: disabled ? 0.6 : 1,
+        minWidth: "110px",
+        transition: "all 0.2s ease",
+      }}
+      onMouseEnter={(e) => {
+        if (!disabled) {
+          e.currentTarget.style.backgroundColor = isResolved
+            ? "#c82333"
+            : "#218838";
+        }
+      }}
+      onMouseLeave={(e) => {
+        if (!disabled) {
+          e.currentTarget.style.backgroundColor = isResolved
+            ? "#dc3545"
+            : "#28a745";
+        }
+      }}
+    >
+      {buttonText}
+    </button>
+  );
+};
+
+// Pagination button componenti
+const PaginationButton = ({ onClick, active, children }) => (
   <button
     onClick={onClick}
-    disabled={disabled}
     style={{
+      padding: "0.5rem 1rem",
+      margin: "0 0.25rem",
       borderRadius: "8px",
-      padding: "0.4rem 0.9rem",
-      fontSize: "0.8rem",
-      fontWeight: "500",
       border: "1px solid #dee2e6",
-      backgroundColor: "white",
-      cursor: disabled ? "not-allowed" : "pointer",
-      opacity: disabled ? 0.6 : 1,
+      backgroundColor: active ? "#667eea" : "white",
+      color: active ? "white" : "#333",
+      cursor: "pointer",
+      fontWeight: active ? "600" : "400",
       transition: "all 0.2s ease",
     }}
     onMouseEnter={(e) => {
-      if (!disabled) e.currentTarget.style.backgroundColor = "#f8f9fa";
+      if (!active) e.currentTarget.style.backgroundColor = "#f8f9fa";
     }}
     onMouseLeave={(e) => {
-      if (!disabled) e.currentTarget.style.backgroundColor = "white";
+      if (!active) e.currentTarget.style.backgroundColor = "white";
     }}
   >
-    Status dəyiş
+    {children}
   </button>
 );
 
@@ -79,6 +120,10 @@ const IncidentList = () => {
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [updatingId, setUpdatingId] = useState(null);
+
+  // ========== PAGINATION STATE ==========
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10; // hər səhifədə 10 nəfər
 
   // Fetch incidents
   const fetchIncidents = useCallback(async () => {
@@ -127,7 +172,7 @@ const IncidentList = () => {
     }
   }, []);
 
-  // Filter incidents
+  // Filter incidents (axtarış)
   const filteredIncidents = useMemo(() => {
     if (!search.trim()) return incidents;
 
@@ -136,6 +181,27 @@ const IncidentList = () => {
       item.fullName?.toLowerCase().includes(searchLower),
     );
   }, [incidents, search]);
+
+  // ========== PAGINATION LOGIC ==========
+  // Cari səhifədə göstəriləcək məlumatlar
+  const paginatedIncidents = useMemo(() => {
+    const start = (currentPage - 1) * itemsPerPage;
+    return filteredIncidents.slice(start, start + itemsPerPage);
+  }, [filteredIncidents, currentPage]);
+
+  // Ümumi səhifə sayı
+  const totalPages = Math.ceil(filteredIncidents.length / itemsPerPage);
+
+  // Səhifə dəyişdikdə axtarış yenilənəndə 1-ci səhifəyə qayıt
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [search]);
+
+  // Səhifə dəyişmə funksiyası
+  const goToPage = (page) => {
+    if (page < 1 || page > totalPages) return;
+    setCurrentPage(page);
+  };
 
   // Stats
   const stats = useMemo(() => {
@@ -178,7 +244,7 @@ const IncidentList = () => {
           <h1
             style={{
               color: "white",
-              fontSize: "2.5rem",
+              fontSize: "2rem",
               fontWeight: "700",
               marginBottom: "0.5rem",
             }}
@@ -229,51 +295,139 @@ const IncidentList = () => {
               : "Heç bir pozuntu yoxdur"}
           </div>
         ) : (
-          <table
-            style={{
-              width: "100%",
-              borderCollapse: "collapse",
-              minWidth: "900px",
-            }}
-          >
-            <thead>
-              <tr>
-                <th style={thStyle}>Ad soyad</th>
-                <th style={thStyle}>Vəzifə</th>
-                <th style={thStyle}>İdarə</th>
-                <th style={thStyle}>Pozuntu tipi</th>
-                <th style={thStyle}>Cəza növü</th>
-                <th style={thStyle}>Status</th>
-                <th style={thStyle}>Əlavə edən</th>
-                <th style={thStyle}>Tarix</th>
-                <th style={thStyle}>Əməliyyat</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredIncidents.map((item) => (
-                <tr key={item.id}>
-                  <td style={tdStyle}>
-                    <strong>{item.fullName || "-"}</strong>
-                  </td>
-                  <td style={tdStyle}>{item.position || "-"}</td>
-                  <td style={tdStyle}>{item.department || "-"}</td>
-                  <td style={tdStyle}>{item.incidentType || "-"}</td>
-                  <td style={tdStyle}>{item.punishment || "-"}</td>
-                  <td style={tdStyle}>
-                    <StatusBadge status={item.status} />
-                  </td>
-                  <td style={tdStyle}>{item.createdBy || "-"}</td>
-                  <td style={tdStyle}>{item.incidentDate || "-"}</td>
-                  <td style={tdStyle}>
-                    <ActionButton
-                      onClick={() => handleUpdateStatus(item.id, item.status)}
-                      disabled={updatingId === item.id}
-                    />
-                  </td>
+          <>
+            <table
+              style={{
+                width: "100%",
+                borderCollapse: "collapse",
+                minWidth: "900px",
+              }}
+            >
+              <thead>
+                <tr>
+                  <th style={thStyle}>Ad soyad</th>
+                  <th style={thStyle}>Vəzifə</th>
+                  <th style={thStyle}>İdarə</th>
+                  <th style={thStyle}>Pozuntu tipi</th>
+                  <th style={thStyle}>Cəza növü</th>
+                  <th style={thStyle}>Status</th>
+                  <th style={thStyle}>Əlavə edən</th>
+                  <th style={thStyle}>Tarix</th>
+                  <th style={thStyle}>Əməliyyat</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {paginatedIncidents.map((item) => (
+                  <tr key={item.id}>
+                    <td style={tdStyle}>
+                      <strong>{item.fullName || "-"}</strong>
+                    </td>
+                    <td style={tdStyle}>{item.position || "-"}</td>
+                    <td style={tdStyle}>{item.department || "-"}</td>
+                    <td style={tdStyle}>{item.incidentType || "-"}</td>
+                    <td style={tdStyle}>{item.punishment || "-"}</td>
+                    <td style={tdStyle}>
+                      <StatusBadge status={item.status} />
+                    </td>
+                    <td style={tdStyle}>{item.createdBy || "-"}</td>
+                    <td style={tdStyle}>{item.incidentDate || "-"}</td>
+                    <td style={tdStyle}>
+                      <ActionButton
+                        onClick={() => handleUpdateStatus(item.id, item.status)}
+                        disabled={updatingId === item.id}
+                        currentStatus={item.status}
+                      />
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+
+            {/* ========== PAGINATION UI ========== */}
+            {totalPages > 1 && (
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  padding: "1.5rem",
+                  borderTop: "1px solid #e9ecef",
+                  gap: "0.5rem",
+                  flexWrap: "wrap",
+                }}
+              >
+                {/* Əvvəlki səhifə */}
+                <PaginationButton
+                  onClick={() => goToPage(currentPage - 1)}
+                  active={false}
+                >
+                  « Əvvəl
+                </PaginationButton>
+
+                {/* Səhifə nömrələri */}
+                {Array.from({ length: totalPages }, (_, i) => i + 1).map(
+                  (page) => {
+                    // Çox səhifə olduqda yalnız ətrafdakıları göstər
+                    if (
+                      totalPages > 7 &&
+                      page > 3 &&
+                      page < totalPages - 2 &&
+                      page !== currentPage
+                    ) {
+                      if (page === 4 && currentPage < totalPages - 3) {
+                        return (
+                          <span key="ellipsis1" style={{ padding: "0 0.5rem" }}>
+                            ...
+                          </span>
+                        );
+                      }
+                      if (page === totalPages - 3 && currentPage > 4) {
+                        return (
+                          <span key="ellipsis2" style={{ padding: "0 0.5rem" }}>
+                            ...
+                          </span>
+                        );
+                      }
+                      if (page > 3 && page < totalPages - 2) return null;
+                    }
+                    return (
+                      <PaginationButton
+                        key={page}
+                        onClick={() => goToPage(page)}
+                        active={currentPage === page}
+                      >
+                        {page}
+                      </PaginationButton>
+                    );
+                  },
+                )}
+
+                {/* Sonrakı səhifə */}
+                <PaginationButton
+                  onClick={() => goToPage(currentPage + 1)}
+                  active={false}
+                >
+                  Sonra »
+                </PaginationButton>
+              </div>
+            )}
+
+            {/* Məlumat (neçə nəfər göstərilir) */}
+            <div
+              style={{
+                padding: "0.75rem 1.5rem 1.5rem",
+                textAlign: "center",
+                fontSize: "0.8rem",
+                color: "#6c757d",
+                borderTop: "1px solid #e9ecef",
+              }}
+            >
+              {`Göstərilir: ${(currentPage - 1) * itemsPerPage + 1} - ${Math.min(
+                currentPage * itemsPerPage,
+                filteredIncidents.length,
+              )} / Cəmi: ${filteredIncidents.length} qeyd`}
+            </div>
+          </>
         )}
       </div>
     </div>
