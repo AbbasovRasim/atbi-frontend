@@ -10,7 +10,7 @@ function CreateIncident() {
     department: "",
     incidentType: "",
     punishment: "",
-    status: "",
+    status: "YEKUNLAŞMAMIŞ",
     incidentDate: new Date().toISOString().split("T")[0],
   });
   const [loading, setLoading] = useState(false);
