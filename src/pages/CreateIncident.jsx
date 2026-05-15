@@ -41,7 +41,7 @@ function CreateIncident() {
   return (
     <div className="container">
       <div className="card" style={{ maxWidth: "800px", margin: "0 auto" }}>
-        <div className="card-header">Yeni pozuntu əlave et</div>
+        <div className="card-header">Yeni pozuntu əlave </div>
         <form onSubmit={handleSubmit}>
           <div className="form-group">
             <label>Ad soyad *</label>
