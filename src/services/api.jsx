@@ -34,11 +34,17 @@ export const api = {
     let data = null;
     const text = await response.text();
     if (text) {
-      data = JSON.parse(text);
+      // ✅ SADƏCƏ JSON OLDUQDA PARSE ET
+      try {
+        data = JSON.parse(text);
+      } catch (e) {
+        // Token və ya digər string cavablar üçün
+        data = text;
+      }
     }
 
     if (!response.ok) {
-      throw new Error(data?.message || "Something went wrong");
+      throw new Error(data?.message || data || "Something went wrong");
     }
 
     return data;
@@ -69,8 +75,25 @@ export const api = {
 
 export const auth = {
   async register(userData) {
-    // ✅ API-nin post metodundan istifadə et (avtomatik token göndərər)
-    return api.post("/auth/register", userData);
+    const token = localStorage.getItem("token");
+
+    const response = await fetch(`${API_BASE_URL}/auth/register`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: token ? `Bearer ${token}` : "",
+      },
+      body: JSON.stringify(userData),
+    });
+
+    const responseText = await response.text();
+
+    if (!response.ok) {
+      throw new Error(responseText || "Registration failed");
+    }
+
+    // ✅ Uğurlu register - JSON parse etmə
+    return { success: true, message: "İstifadəçi uğurla yaradıldı" };
   },
 
   async login(credentials) {
