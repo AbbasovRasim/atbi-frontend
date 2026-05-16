@@ -55,8 +55,17 @@ function App() {
         <Routes>
           <Route path="/login" element={<Login />} />
 
-          {/* ✅ MÜVƏQQƏTİ - HƏR KƏSƏ AÇIQ */}
-          <Route path="/register" element={<Register />} />
+          {/* ✅ REGISTER YALNIZ ADMIN ÜÇÜN */}
+          <Route
+            path="/register"
+            element={
+              localStorage.getItem("role") === "ADMIN" ? (
+                <Register />
+              ) : (
+                <Navigate to="/login" />
+              )
+            }
+          />
 
           <Route element={<PrivateRoute />}>
             <Route element={<Navbar />}>
