@@ -23,18 +23,59 @@ function App() {
   return (
     <Router>
       <div className="app">
-        <Toaster />
+        <Toaster
+          position="top-right"
+          toastOptions={{
+            duration: 3000,
+
+            style: {
+              background: "#1f1f1f",
+              color: "#fff",
+              borderRadius: "14px",
+              padding: "16px",
+              fontSize: "14px",
+              fontWeight: "500",
+              border: "1px solid rgba(255,255,255,0.08)",
+              boxShadow: "0 8px 30px rgba(0,0,0,0.35)",
+            },
+
+            success: {
+              iconTheme: {
+                primary: "#22c55e",
+                secondary: "#fff",
+              },
+            },
+
+            error: {
+              iconTheme: {
+                primary: "#ef4444",
+                secondary: "#fff",
+              },
+            },
+          }}
+        />
 
         <Routes>
           <Route path="/login" element={<Login />} />
 
-          {/* ✅ MÜVƏQQƏTİ DƏYİŞİKLİK - HƏR KƏSƏ AÇIQ */}
-          <Route path="/register" element={<Register />} />
+          <Route
+            path="/register"
+            element={
+              localStorage.getItem("token") &&
+              localStorage.getItem("role") === "ADMIN" ? (
+                <Register />
+              ) : (
+                <Navigate to="/login" />
+              )
+            }
+          />
 
           <Route element={<PrivateRoute />}>
             <Route element={<Navbar />}>
               <Route path="/dashboard" element={<Dashboard />} />
+
               <Route path="/incidents" element={<IncidentList />} />
+
               <Route path="/create-incident" element={<CreateIncident />} />
             </Route>
           </Route>
