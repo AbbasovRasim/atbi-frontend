@@ -2,13 +2,11 @@ import React, { useState, useEffect, useCallback, useMemo } from "react";
 import toast from "react-hot-toast";
 import { incident } from "../services/api";
 
-// Status tipləri
 const STATUS_TYPES = {
   PENDING: "Yekunlaşmamış",
   RESOLVED: "Yekunlaşmış",
 };
 
-// Sabit style obyektləri
 const thStyle = {
   textAlign: "left",
   padding: "1rem",
@@ -27,7 +25,6 @@ const tdStyle = {
   borderBottom: "1px solid #2a2a3a",
 };
 
-// Status badge componenti
 const StatusBadge = ({ status }) => {
   const isPending = status === STATUS_TYPES.PENDING;
   return (
@@ -50,7 +47,6 @@ const StatusBadge = ({ status }) => {
   );
 };
 
-// Action button componenti
 const ActionButton = ({ onClick, disabled }) => (
   <button
     onClick={onClick}
@@ -91,6 +87,7 @@ const IncidentList = () => {
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [updatingId, setUpdatingId] = useState(null);
+  const [selectedPdf, setSelectedPdf] = useState(null);
 
   const fetchIncidents = useCallback(async () => {
     try {
@@ -266,18 +263,22 @@ const IncidentList = () => {
                   <td style={tdStyle}>{item.incidentDate || "-"}</td>
                   <td style={tdStyle}>
                     {item.pdfFileName ? (
-                      <a
-                        href={`https://atbi-backend.onrender.com/files/download/${item.pdfFileName}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
+                      <button
+                        onClick={() => setSelectedPdf(item.pdfFileName)}
                         style={{
-                          color: "#a855f7",
-                          textDecoration: "none",
+                          background:
+                            "linear-gradient(135deg, #a855f7, #7c3aed)",
+                          border: "none",
+                          borderRadius: "8px",
+                          padding: "6px 12px",
+                          color: "white",
+                          cursor: "pointer",
+                          fontSize: "0.75rem",
                           fontWeight: "500",
                         }}
                       >
                         📄 PDF
-                      </a>
+                      </button>
                     ) : (
                       "-"
                     )}
@@ -294,6 +295,61 @@ const IncidentList = () => {
           </table>
         )}
       </div>
+
+      {/* PDF MODAL */}
+      {selectedPdf && (
+        <div
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundColor: "rgba(0, 0, 0, 0.95)",
+            zIndex: 9999,
+            display: "flex",
+            flexDirection: "column",
+          }}
+        >
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              padding: "15px 20px",
+              backgroundColor: "#1e1e2e",
+              borderBottom: "1px solid #334155",
+            }}
+          >
+            <span style={{ color: "white", fontWeight: "600" }}>
+              Əməkdaşın Anketi
+            </span>
+            <button
+              onClick={() => setSelectedPdf(null)}
+              style={{
+                background: "#a855f7",
+                border: "none",
+                padding: "8px 16px",
+                borderRadius: "8px",
+                cursor: "pointer",
+                color: "white",
+                fontWeight: "500",
+              }}
+            >
+              ✖ Bağla
+            </button>
+          </div>
+          <iframe
+            src={`https://atbi-backend.onrender.com/files/download/${selectedPdf}`}
+            style={{
+              width: "100%",
+              height: "calc(100% - 60px)",
+              border: "none",
+            }}
+            title="PDF Viewer"
+          />
+        </div>
+      )}
     </div>
   );
 };
