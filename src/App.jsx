@@ -58,17 +58,8 @@ function App() {
         <Routes>
           <Route path="/login" element={<Login />} />
 
-          <Route
-            path="/register"
-            element={
-              localStorage.getItem("token") &&
-              localStorage.getItem("role") === "ADMIN" ? (
-                <Register />
-              ) : (
-                <Navigate to="/login" />
-              )
-            }
-          />
+          {/* ✅ MÜVƏQQƏTİ - HƏR KƏSƏ AÇIQ */}
+          <Route path="/register" element={<Register />} />
 
           <Route element={<PrivateRoute />}>
             <Route element={<Navbar />}>
