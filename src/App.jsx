@@ -27,7 +27,6 @@ function App() {
           position="top-right"
           toastOptions={{
             duration: 3000,
-
             style: {
               background: "#1f1f1f",
               color: "#fff",
@@ -38,14 +37,12 @@ function App() {
               border: "1px solid rgba(255,255,255,0.08)",
               boxShadow: "0 8px 30px rgba(0,0,0,0.35)",
             },
-
             success: {
               iconTheme: {
                 primary: "#22c55e",
                 secondary: "#fff",
               },
             },
-
             error: {
               iconTheme: {
                 primary: "#ef4444",
@@ -58,15 +55,22 @@ function App() {
         <Routes>
           <Route path="/login" element={<Login />} />
 
-          {/* ✅ MÜVƏQQƏTİ - HƏR KƏSƏ AÇIQ */}
-          <Route path="/register" element={<Register />} />
+          {/* ✅ REGISTER YALNIZ ADMIN ÜÇÜN */}
+          <Route
+            path="/register"
+            element={
+              localStorage.getItem("role") === "ADMIN" ? (
+                <Register />
+              ) : (
+                <Navigate to="/login" />
+              )
+            }
+          />
 
           <Route element={<PrivateRoute />}>
             <Route element={<Navbar />}>
               <Route path="/dashboard" element={<Dashboard />} />
-
               <Route path="/incidents" element={<IncidentList />} />
-
               <Route path="/create-incident" element={<CreateIncident />} />
             </Route>
           </Route>
