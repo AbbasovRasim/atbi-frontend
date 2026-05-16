@@ -1,3 +1,11 @@
+* Köhnə gradient-i söndür */ body {
+  background: #0f0f1a !important;
+}
+
+.app {
+  background: #0f0f1a !important;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -12,7 +20,6 @@ body {
     "Segoe UI",
     "Roboto",
     sans-serif;
-  background: #0f0f1a;
   min-height: 100vh;
 }
 
