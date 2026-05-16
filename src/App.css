@@ -232,10 +232,6 @@ td {
   font-size: 0.85rem;
 }
 
-tr:hover td {
-  background: #2a2a3a;
-}
-
 /* Dashboard Page */
 .dashboard-welcome {
   background: linear-gradient(135deg, #1e1e2e, #2a2a3a);
