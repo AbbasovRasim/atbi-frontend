@@ -8,8 +8,8 @@ function Dashboard() {
     active: 0,
     resolved: 0,
   });
-
   const [loading, setLoading] = useState(true);
+  const username = localStorage.getItem("username");
 
   useEffect(() => {
     fetchIncidents();
@@ -18,15 +18,12 @@ function Dashboard() {
   const fetchIncidents = async () => {
     try {
       const data = (await incident.getAll()) || [];
-
       const activeCount = data.filter(
-        (inc) => inc.status === "ARAŞDIRILIR",
+        (inc) => inc.status === "Yekunlaşmamış",
       ).length;
-
       const resolvedCount = data.filter(
-        (inc) => inc.status === "BAĞLANIB",
+        (inc) => inc.status === "Yekunlaşmış",
       ).length;
-
       setStats({
         total: data.length,
         active: activeCount,
@@ -42,26 +39,29 @@ function Dashboard() {
   if (loading) {
     return (
       <div className="container">
-        <div style={{ textAlign: "center", padding: "50px" }}>Loading...</div>
+        <div style={{ textAlign: "center", padding: "50px", color: "#94a3b8" }}>
+          Yüklənir...
+        </div>
       </div>
     );
   }
 
   return (
     <div className="container">
-      <h1 style={{ marginBottom: "2rem", color: "white" }}>İdarə paneli</h1>
+      <div className="dashboard-welcome">
+        <h1>İdarə Panelinə Xoş Gəlmisiniz</h1>
+        <p>Hörmətli {username}, xidməti pozuntulara dair statistikalar</p>
+      </div>
 
       <div className="stats-grid">
         <div className="stat-card">
           <div className="stat-number">{stats.total}</div>
           <div className="stat-label">Ümumi pozuntular</div>
         </div>
-
         <div className="stat-card">
           <div className="stat-number">{stats.active}</div>
           <div className="stat-label">Yekunlaşmamış pozuntular</div>
         </div>
-
         <div className="stat-card">
           <div className="stat-number">{stats.resolved}</div>
           <div className="stat-label">Yekunlaşmış pozuntular</div>
