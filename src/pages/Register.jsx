@@ -7,7 +7,7 @@ function Register() {
   const [userData, setUserData] = useState({
     username: "",
     password: "",
-    fullname: "",
+    fullName: "",
     email: "",
     department: "",
   });
@@ -19,9 +19,15 @@ function Register() {
     setLoading(true);
 
     try {
-      await auth.register(userData);
-      toast.success("Registration successful! Please login.");
-      navigate("/login");
+      // ✅ SADƏCƏ username və password göndər
+      const registerData = {
+        username: userData.username,
+        password: userData.password,
+      };
+
+      await auth.register(registerData);
+      toast.success("İstifadəçi uğurla yaradıldı!");
+      navigate("/incidents");
     } catch (error) {
       toast.error(error.message);
     } finally {
@@ -39,40 +45,40 @@ function Register() {
   return (
     <div className="container">
       <div className="card" style={{ maxWidth: "500px", margin: "50px auto" }}>
-        <div className="card-header">Register</div>
+        <div className="card-header">Yeni İstifadəçi Qeydiyyatı</div>
         <form onSubmit={handleSubmit}>
           <div className="form-group">
-            <label>Username *</label>
+            <label>İstifadəçi adı *</label>
             <input
               type="text"
               name="username"
               value={userData.username}
               onChange={handleChange}
               required
-              placeholder="Choose a username"
+              placeholder="İstifadəçi adı daxil edin"
             />
           </div>
 
           <div className="form-group">
-            <label>Password *</label>
+            <label>Şifrə *</label>
             <input
               type="password"
               name="password"
               value={userData.password}
               onChange={handleChange}
               required
-              placeholder="Choose a password"
+              placeholder="Şifrə daxil edin"
             />
           </div>
 
           <div className="form-group">
-            <label>Full Name</label>
+            <label>Tam Ad</label>
             <input
               type="text"
-              name="fullname"
-              value={userData.fullname}
+              name="fullName"
+              value={userData.fullName}
               onChange={handleChange}
-              placeholder="Enter your full name"
+              placeholder="Tam ad daxil edin"
             />
           </div>
 
@@ -83,34 +89,29 @@ function Register() {
               name="email"
               value={userData.email}
               onChange={handleChange}
-              placeholder="Enter your email"
+              placeholder="Email daxil edin"
             />
           </div>
 
           <div className="form-group">
-            <label>Department</label>
+            <label>Şöbə</label>
             <input
               type="text"
               name="department"
               value={userData.department}
               onChange={handleChange}
-              placeholder="Enter your department"
+              placeholder="Şöbə daxil edin"
             />
           </div>
 
-          <button
-            type="submit"
-            className="btn btn-primary"
-            style={{ width: "100%" }}
-            disabled={loading}
-          >
-            {loading ? "Registering..." : "Register"}
+          <button type="submit" className="btn btn-primary" disabled={loading}>
+            {loading ? "Yaradılır..." : "İstifadəçi Yarad"}
           </button>
         </form>
 
         <div style={{ textAlign: "center", marginTop: "1rem" }}>
-          <Link to="/login" style={{ color: "#667eea" }}>
-            Already have an account? Login
+          <Link to="/incidents" style={{ color: "#667eea" }}>
+            Geri qayıt
           </Link>
         </div>
       </div>
