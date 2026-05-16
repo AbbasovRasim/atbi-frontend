@@ -34,11 +34,9 @@ export const api = {
     let data = null;
     const text = await response.text();
     if (text) {
-      // ✅ SADƏCƏ JSON OLDUQDA PARSE ET
       try {
         data = JSON.parse(text);
       } catch (e) {
-        // Token və ya digər string cavablar üçün
         data = text;
       }
     }
@@ -73,6 +71,28 @@ export const api = {
   },
 };
 
+// ✅ PDF UPLOAD FUNKSİYASI
+export const fileUpload = async (file) => {
+  const token = localStorage.getItem("token");
+  const formData = new FormData();
+  formData.append("file", file);
+
+  const response = await fetch(`${API_BASE_URL}/files/upload`, {
+    method: "POST",
+    headers: {
+      Authorization: token ? `Bearer ${token}` : "",
+    },
+    body: formData,
+  });
+
+  if (!response.ok) {
+    const error = await response.text();
+    throw new Error(error || "Fayl yüklənmədi");
+  }
+
+  return await response.text();
+};
+
 export const auth = {
   async register(userData) {
     const token = localStorage.getItem("token");
@@ -92,7 +112,6 @@ export const auth = {
       throw new Error(responseText || "Registration failed");
     }
 
-    // ✅ Uğurlu register - JSON parse etmə
     return { success: true, message: "İstifadəçi uğurla yaradıldı" };
   },
 

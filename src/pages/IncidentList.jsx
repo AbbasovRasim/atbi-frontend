@@ -8,23 +8,23 @@ const STATUS_TYPES = {
   RESOLVED: "Yekunlaşmış",
 };
 
-// Sabit style obyektləri (komponentdən kənarda)
+// Sabit style obyektləri
 const thStyle = {
   textAlign: "left",
   padding: "1rem",
-  color: "#2b2b2b",
-  fontSize: "1rem",
-  fontWeight: "700",
-  backgroundColor: "#f8f9fa",
-  borderBottom: "2px solid #e9ecef",
+  color: "#e2e8f0",
+  fontSize: "0.85rem",
+  fontWeight: "600",
+  backgroundColor: "#252536",
+  borderBottom: "1px solid #334155",
 };
 
 const tdStyle = {
   padding: "1rem",
-  fontSize: "1rem",
-  color: "#222",
+  fontSize: "0.85rem",
+  color: "#cbd5e1",
   verticalAlign: "middle",
-  borderBottom: "1px solid #f0f0f0",
+  borderBottom: "1px solid #2a2a3a",
 };
 
 // Status badge componenti
@@ -34,12 +34,15 @@ const StatusBadge = ({ status }) => {
     <span
       style={{
         display: "inline-block",
-        padding: "0.7rem 1.3rem", // daha böyük
-        fontSize: "1rem", // daha böyük
-        borderRadius: "40px", // daha yumrus
+        padding: "0.5rem 1rem",
+        fontSize: "0.8rem",
+        borderRadius: "30px",
         fontWeight: "600",
-        backgroundColor: isPending ? "#fff3cd" : "#d1e7dd",
-        color: isPending ? "#856404" : "#0f5132",
+        backgroundColor: isPending
+          ? "rgba(251, 191, 36, 0.15)"
+          : "rgba(34, 197, 94, 0.15)",
+        color: isPending ? "#fbbf24" : "#22c55e",
+        border: `1px solid ${isPending ? "#fbbf24" : "#22c55e"}`,
       }}
     >
       {status}
@@ -55,19 +58,28 @@ const ActionButton = ({ onClick, disabled }) => (
     style={{
       borderRadius: "8px",
       padding: "0.4rem 0.9rem",
-      fontSize: "0.8rem",
+      fontSize: "0.75rem",
       fontWeight: "500",
-      border: "1px solid #dee2e6",
-      backgroundColor: "white",
+      border: "1px solid #4a4a5a",
+      backgroundColor: "#2a2a3a",
+      color: "#cbd5e1",
       cursor: disabled ? "not-allowed" : "pointer",
-      opacity: disabled ? 0.6 : 1,
+      opacity: disabled ? 0.5 : 1,
       transition: "all 0.2s ease",
     }}
     onMouseEnter={(e) => {
-      if (!disabled) e.currentTarget.style.backgroundColor = "#f8f9fa";
+      if (!disabled) {
+        e.currentTarget.style.backgroundColor = "#a855f7";
+        e.currentTarget.style.color = "white";
+        e.currentTarget.style.borderColor = "#a855f7";
+      }
     }}
     onMouseLeave={(e) => {
-      if (!disabled) e.currentTarget.style.backgroundColor = "white";
+      if (!disabled) {
+        e.currentTarget.style.backgroundColor = "#2a2a3a";
+        e.currentTarget.style.color = "#cbd5e1";
+        e.currentTarget.style.borderColor = "#4a4a5a";
+      }
     }}
   >
     Status dəyiş
@@ -80,7 +92,6 @@ const IncidentList = () => {
   const [search, setSearch] = useState("");
   const [updatingId, setUpdatingId] = useState(null);
 
-  // Fetch incidents
   const fetchIncidents = useCallback(async () => {
     try {
       setLoading(true);
@@ -98,7 +109,6 @@ const IncidentList = () => {
     fetchIncidents();
   }, [fetchIncidents]);
 
-  // Update status
   const handleUpdateStatus = useCallback(async (id, currentStatus) => {
     const newStatus =
       currentStatus === STATUS_TYPES.PENDING
@@ -109,16 +119,12 @@ const IncidentList = () => {
 
     try {
       await incident.updateStatus(id, newStatus);
-
       setIncidents((prev) =>
         prev.map((item) =>
           item.id === id ? { ...item, status: newStatus } : item,
         ),
       );
-
-      toast.success(`Status "${newStatus}" olaraq dəyişdirildi`, {
-        duration: 2000,
-      });
+      toast.success(`Status "${newStatus}" olaraq dəyişdirildi`);
     } catch (error) {
       console.error("Update error:", error);
       toast.error("Status dəyişdirilə bilmədi");
@@ -127,17 +133,14 @@ const IncidentList = () => {
     }
   }, []);
 
-  // Filter incidents
   const filteredIncidents = useMemo(() => {
     if (!search.trim()) return incidents;
-
     const searchLower = search.toLowerCase();
     return incidents.filter((item) =>
       item.fullName?.toLowerCase().includes(searchLower),
     );
   }, [incidents, search]);
 
-  // Stats
   const stats = useMemo(() => {
     const total = incidents.length;
     const pending = incidents.filter(
@@ -152,10 +155,8 @@ const IncidentList = () => {
   if (loading) {
     return (
       <div className="container">
-        <div style={{ textAlign: "center", padding: "50px" }}>
-          <div style={{ fontSize: "1.2rem", color: "#6c757d" }}>
-            Yüklənir...
-          </div>
+        <div style={{ textAlign: "center", padding: "50px", color: "#94a3b8" }}>
+          Yüklənir...
         </div>
       </div>
     );
@@ -163,7 +164,6 @@ const IncidentList = () => {
 
   return (
     <div className="container">
-      {/* Header + Search + Stats */}
       <div
         style={{
           display: "flex",
@@ -178,17 +178,17 @@ const IncidentList = () => {
           <h1
             style={{
               color: "white",
-              fontSize: "2.5rem",
+              fontSize: "2rem",
               fontWeight: "700",
               marginBottom: "0.5rem",
             }}
           >
             Xidməti pozuntular
           </h1>
-          <div style={{ display: "flex", gap: "1rem", fontSize: "0.85rem" }}>
-            <span style={{ color: "#adb5bd" }}>Ümumi: {stats.total}</span>
-            <span style={{ color: "#ffc107" }}>Gözləyən: {stats.pending}</span>
-            <span style={{ color: "#20c997" }}>Bitən: {stats.resolved}</span>
+          <div style={{ display: "flex", gap: "1.5rem", fontSize: "0.85rem" }}>
+            <span style={{ color: "#94a3b8" }}>Ümumi: {stats.total}</span>
+            <span style={{ color: "#fbbf24" }}>Gözləyən: {stats.pending}</span>
+            <span style={{ color: "#22c55e" }}>Bitən: {stats.resolved}</span>
           </div>
         </div>
 
@@ -198,11 +198,11 @@ const IncidentList = () => {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           style={{
-            padding: "0.75rem 1rem",
+            padding: "0.7rem 1rem",
             borderRadius: "12px",
-            border: "1px solid rgba(255,255,255,0.3)",
-            background: "white",
-            color: "#222",
+            border: "1px solid #334155",
+            background: "#2a2a3a",
+            color: "#f1f5f9",
             outline: "none",
             width: "260px",
             fontSize: "0.9rem",
@@ -210,19 +210,18 @@ const IncidentList = () => {
         />
       </div>
 
-      {/* Table Card */}
       <div
         style={{
-          borderRadius: "24px",
+          borderRadius: "20px",
           padding: "0",
-          backgroundColor: "white",
-          boxShadow: "0 8px 20px rgba(0,0,0,0.1)",
+          backgroundColor: "#1e1e2e",
+          border: "1px solid rgba(255, 255, 255, 0.05)",
           overflowX: "auto",
         }}
       >
         {filteredIncidents.length === 0 ? (
           <div
-            style={{ padding: "3rem", textAlign: "center", color: "#6c757d" }}
+            style={{ padding: "3rem", textAlign: "center", color: "#64748b" }}
           >
             {search
               ? "Axtarışa uyğun pozuntu tapılmadı"
@@ -246,6 +245,7 @@ const IncidentList = () => {
                 <th style={thStyle}>Status</th>
                 <th style={thStyle}>Əlavə edən</th>
                 <th style={thStyle}>Tarix</th>
+                <th style={thStyle}>Anket</th>
                 <th style={thStyle}>Əməliyyat</th>
               </tr>
             </thead>
@@ -264,6 +264,24 @@ const IncidentList = () => {
                   </td>
                   <td style={tdStyle}>{item.createdBy || "-"}</td>
                   <td style={tdStyle}>{item.incidentDate || "-"}</td>
+                  <td style={tdStyle}>
+                    {item.pdfFileName ? (
+                      <a
+                        href={`https://atbi-backend.onrender.com/files/download/${item.pdfFileName}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{
+                          color: "#a855f7",
+                          textDecoration: "none",
+                          fontWeight: "500",
+                        }}
+                      >
+                        📄 PDF
+                      </a>
+                    ) : (
+                      "-"
+                    )}
+                  </td>
                   <td style={tdStyle}>
                     <ActionButton
                       onClick={() => handleUpdateStatus(item.id, item.status)}
