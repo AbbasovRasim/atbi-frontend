@@ -105,7 +105,7 @@ function Register() {
           </div>
 
           <button type="submit" className="btn btn-primary" disabled={loading}>
-            {loading ? "Yaradılır..." : "İstifadəçi Yarad"}
+            {loading ? "Yaradılır..." : "İstifadəçi Yarat"}
           </button>
         </form>
 
