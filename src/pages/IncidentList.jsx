@@ -260,7 +260,16 @@ const IncidentList = () => {
                     <StatusBadge status={item.status} />
                   </td>
                   <td style={tdStyle}>{item.createdBy || "-"}</td>
-                  <td style={tdStyle}>{item.incidentDate || "-"}</td>
+
+                  <td
+                    style={{
+                      ...tdStyle,
+                      whiteSpace: "nowrap",
+                    }}
+                  >
+                    {item.incidentDate || "-"}
+                  </td>
+
                   <td style={tdStyle}>
                     {item.pdfFileName ? (
                       <button
