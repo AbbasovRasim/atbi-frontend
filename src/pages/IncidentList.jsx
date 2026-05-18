@@ -65,9 +65,9 @@ const ActionButton = ({ onClick, disabled }) => (
     }}
     onMouseEnter={(e) => {
       if (!disabled) {
-        e.currentTarget.style.backgroundColor = "#a855f7";
+        e.currentTarget.style.backgroundColor = "#0284c7";
         e.currentTarget.style.color = "white";
-        e.currentTarget.style.borderColor = "#a855f7";
+        e.currentTarget.style.borderColor = "#38bdf8";
       }
     }}
     onMouseLeave={(e) => {
