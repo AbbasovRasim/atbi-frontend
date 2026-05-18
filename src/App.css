@@ -33,8 +33,6 @@ body {
   position: relative;
 }
 
-/* Glow overlay */
-
 body::before {
   content: "";
 
@@ -57,44 +55,6 @@ body::before {
   pointer-events: none;
 
   z-index: -1;
-}
-
-/* Hərəkətli buludlar */
-
-body::after {
-  content: "";
-
-  position: fixed;
-
-  top: -10%;
-
-  left: -50%;
-
-  width: 200%;
-
-  height: 120%;
-
-  background: url("https://i.imgur.com/9QZ7F6Q.png");
-
-  background-size: cover;
-
-  opacity: 0.12;
-
-  animation: moveClouds 120s linear infinite;
-
-  pointer-events: none;
-
-  z-index: -1;
-}
-
-@keyframes moveClouds {
-  0% {
-    transform: translateX(0);
-  }
-
-  100% {
-    transform: translateX(25%);
-  }
 }
 
 .app {
