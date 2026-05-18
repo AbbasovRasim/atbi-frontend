@@ -57,6 +57,36 @@ body::before {
   z-index: -1;
 }
 
+/* Hərəkətli bulud effekti */
+
+body::after {
+  content: "";
+
+  position: fixed;
+
+  inset: 0;
+
+  background: url("https://www.transparenttextures.com/patterns/clouds.png");
+
+  opacity: 0.08;
+
+  animation: moveClouds 90s linear infinite;
+
+  pointer-events: none;
+
+  z-index: -1;
+}
+
+@keyframes moveClouds {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(400px);
+  }
+}
+
 .app {
   min-height: 100vh;
   backdrop-filter: blur(2px);
