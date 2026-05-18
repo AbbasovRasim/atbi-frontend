@@ -33,6 +33,8 @@ body {
   position: relative;
 }
 
+/* Glow overlay */
+
 body::before {
   content: "";
 
@@ -57,20 +59,28 @@ body::before {
   z-index: -1;
 }
 
-/* Hərəkətli bulud effekti */
+/* Hərəkətli buludlar */
 
 body::after {
   content: "";
 
   position: fixed;
 
-  inset: 0;
+  top: -10%;
 
-  background: url("https://www.transparenttextures.com/patterns/clouds.png");
+  left: -50%;
 
-  opacity: 0.08;
+  width: 200%;
 
-  animation: moveClouds 90s linear infinite;
+  height: 120%;
+
+  background: url("https://i.imgur.com/9QZ7F6Q.png");
+
+  background-size: cover;
+
+  opacity: 0.12;
+
+  animation: moveClouds 120s linear infinite;
 
   pointer-events: none;
 
@@ -78,12 +88,12 @@ body::after {
 }
 
 @keyframes moveClouds {
-  from {
+  0% {
     transform: translateX(0);
   }
 
-  to {
-    transform: translateX(400px);
+  100% {
+    transform: translateX(25%);
   }
 }
 
