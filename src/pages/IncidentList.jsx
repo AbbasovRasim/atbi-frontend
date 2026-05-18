@@ -276,7 +276,7 @@ const IncidentList = () => {
                         onClick={() => setSelectedPdf(item.pdfFileName)}
                         style={{
                           background:
-                            "linear-gradient(135deg, #a855f7, #7c3aed)",
+                            "linear-gradient(135deg, #0ea5e9, #0284c7)",
                           border: "none",
                           borderRadius: "8px",
                           padding: "6px 12px",
@@ -336,7 +336,7 @@ const IncidentList = () => {
             <button
               onClick={() => setSelectedPdf(null)}
               style={{
-                background: "#a855f7",
+                background: "#0284c7",
                 border: "none",
                 padding: "8px 16px",
                 borderRadius: "8px",
